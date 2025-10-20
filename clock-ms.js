@@ -107,7 +107,6 @@ function addTimer(){
 		canvasTd.appendChild(canvasCanvas);
         canvasTd.appendChild(secondDisplay);
         
-		
 		//Create practice button:
 		var pbTd = document.createElement('TD'),
 			pbTdStyle = document.createAttribute('style'),
@@ -212,7 +211,6 @@ function addTimer(){
 			
 		$('.village_anchor').parent().parent()[0].appendChild(canvasTd);
 		lastRow.appendChild(pbTd);
-		//lastRow.appendChild(rbTd);
 		lastRow.appendChild(hitTd);
 		lastRow.appendChild(offsetTd);
 		lastRow.appendChild(missTd);
@@ -249,33 +247,46 @@ function practiceFunction(){
 	}
 }
 
+// ✅ التعديل هنا: النقطة الدوارة أصبحت أكبر وباللون الأحمر
 function startCanvas(lastMillis, currentMillis){
 	var c = document.getElementById("millis_canvas"),
 		ctx = c.getContext("2d"),
 		circleReference = -1.6;
 
-    // ضبط أبعاد الـ canvas للتأكد من وضوح الرسم
-    c.width = 150;
-    c.height = 150;
+	c.width = 150;
+	c.height = 150;
 
 	if(first){first=false;lastMillis=0;}
 	ctx.beginPath();
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = "#000";
 	ctx.arc(75, 75, 50, circleReference + lastMillis/100000 * 628, circleReference + currentMillis/100000 * 628);
 	ctx.stroke();
 
-	// ترقيم الدائرة من 1 إلى 10 مع عقارب الساعة
+	// رسم الأرقام
 	ctx.font = "12px Arial";
 	ctx.fillStyle = "black";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
-	
 	for (let i = 1; i <= 10; i++) {
-		// نحسب الزاوية لكل رقم؛ نبدأ من الأعلى (-90 درجة) ونتحرك مع عقارب الساعة
 		let angle = (i / 10) * 2 * Math.PI - Math.PI / 2;
-		let x = 75 + Math.cos(angle) * 60; // نصف القطر الخارجي لوضع الأرقام خارج الدائرة
+		let x = 75 + Math.cos(angle) * 60;
 		let y = 75 + Math.sin(angle) * 60;
 		ctx.fillText(i.toString(), x, y);
 	}
+
+	// ✅ رسم النقطة الحمراء الدوارة
+	let endAngle = circleReference + (currentMillis / 100000) * 628;
+	let px = 75 + Math.cos(endAngle) * 50;
+	let py = 75 + Math.sin(endAngle) * 50;
+
+	ctx.beginPath();
+	ctx.fillStyle = "red";
+	ctx.shadowBlur = 10;      // تأثير توهج خفيف
+	ctx.shadowColor = "red";
+	ctx.arc(px, py, 6, 0, 2 * Math.PI); // النقطة أكبر (نصف قطر 6)
+	ctx.fill();
+	ctx.shadowBlur = 0;
 }
 
 function setCookies(){
