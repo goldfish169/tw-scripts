@@ -253,10 +253,29 @@ function startCanvas(lastMillis, currentMillis){
 	var c = document.getElementById("millis_canvas"),
 		ctx = c.getContext("2d"),
 		circleReference = -1.6;
+
+    // ضبط أبعاد الـ canvas للتأكد من وضوح الرسم
+    c.width = 150;
+    c.height = 150;
+
 	if(first){first=false;lastMillis=0;}
 	ctx.beginPath();
 	ctx.arc(75, 75, 50, circleReference + lastMillis/100000 * 628, circleReference + currentMillis/100000 * 628);
 	ctx.stroke();
+
+	// ترقيم الدائرة من 1 إلى 10 مع عقارب الساعة
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "black";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	
+	for (let i = 1; i <= 10; i++) {
+		// نحسب الزاوية لكل رقم؛ نبدأ من الأعلى (-90 درجة) ونتحرك مع عقارب الساعة
+		let angle = (i / 10) * 2 * Math.PI - Math.PI / 2;
+		let x = 75 + Math.cos(angle) * 60; // نصف القطر الخارجي لوضع الأرقام خارج الدائرة
+		let y = 75 + Math.sin(angle) * 60;
+		ctx.fillText(i.toString(), x, y);
+	}
 }
 
 function setCookies(){
