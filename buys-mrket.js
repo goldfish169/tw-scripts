@@ -36,7 +36,7 @@ stocks.forEach(function(resource) {
         }
     } 
     // المجموعة 2: بين 50 و 64
-    else if (stockValue >= 40 && stockValue <= 64) {
+    else if (stockValue >= 35 && stockValue <= 64) {
          if (stockValue > highestStockValue50_64) {
             highestStockValue50_64 = stockValue;
             highestResourceName50_64 = resourceName;
