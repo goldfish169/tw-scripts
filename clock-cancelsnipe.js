@@ -24,10 +24,13 @@ function timer(){
 	var arrival = $(".relative_time")[0].innerHTML,
 		d = new Date(),
 		now = d.getTime();
+	
+	// ✅ التعديل هنا: جلب الوقت الكامل من سيرفر اللعبة المباشر #serverTime بدلاً من الوقت النسبي
+	if($("#serverTime").length > 0){
+		$("#second_display")[0].innerHTML = $("#serverTime")[0].innerHTML;
+	}
+
 	if(lastArrival != arrival && changed == false){
-		// ✅ التعديل هنا: إظهار الدقائق والثواني معاً (مثال: 05:20) بدلاً من الثواني فقط
-		var timeParts = arrival.split(":");
-		$("#second_display")[0].innerHTML = timeParts[1] + ":" + timeParts[2];
 		changeMillis = now;
 		changed = true;
 	}
@@ -67,11 +70,14 @@ function startupTimer(){
 	var arrival = $(".relative_time")[0].innerHTML,
 		d = new Date(),
 		now = d.getTime();
+	
+	// ✅ تحديث مستمر من توقيت السيرفر حتى في وضع الـ Startup
+	if($("#serverTime").length > 0){
+		$("#second_display")[0].innerHTML = $("#serverTime")[0].innerHTML;
+	}
+
 	if(lastArrival != arrival && changed == false){
 		changed = true;
-		// ✅ التعديل هنا أيضاً: لتحديث الدقائق والثواني عند بدء التشغيل السريع
-		var timeParts = arrival.split(":");
-		$("#second_display")[0].innerHTML = timeParts[1] + ":" + timeParts[2];
 		changeMillis = now;
 	}
 	if((now - changeMillis >= Number($("#hit_input")[0].value) + Number($("#offset_input")[0].value)) && (changed == true)){
@@ -106,8 +112,8 @@ function addTimer(){
 		canvasTd.setAttributeNode(canvasColspan);
 		canvasCanvas.setAttributeNode(canvasId);
 		
-		// ✅ التعديل هنا: تم تعديل الـ left من 62px إلى 53px ليتوسط النص الجديد (00:00) الدائرة تماماً ولا يخرج عن الإطار
-		secondStyle.value = 'position:relative;bottom:105px;left:53px;font-size:18px;font-weight:bold;';
+		// ✅ التعديل هنا: محاذاة وتصغير الخط قليلاً ليناسب التوقيت الكامل (الساعة:الدقيقة:الcounter) ليكون بالمنتصف تماماً
+		secondStyle.value = 'position:relative;bottom:102px;left:40px;font-size:15px;font-weight:bold;';
 		secondId.value = 'second_display';
 		secondDisplay.setAttributeNode(secondId);
 		secondDisplay.setAttributeNode(secondStyle);
